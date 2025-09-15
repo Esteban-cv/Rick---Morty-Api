@@ -1,7 +1,7 @@
 function fillTable(data) {
     let table = "";
     const characters = data.results;
-    
+
     characters.forEach(character => {
         table += `
         <tr>
@@ -17,9 +17,13 @@ function fillTable(data) {
         </tr>
         `;
     });
-    
+
     $("#charactersTable").html(table);
-    // volver a inicializar
+
+    // 🔹 Corregido: destruir antes de volver a inicializar
+    if ($.fn.DataTable.isDataTable('#tablapersonajes')) {
+        $('#tablapersonajes').DataTable().destroy();
+    }
     $('#tablapersonajes').DataTable();
 }
 
@@ -31,7 +35,7 @@ function showCharacterDetails(character) {
     $("#characterGender").text(character.gender);
     $("#characterOrigin").text(character.origin.name);
     $("#characterLocation").text(character.location.name);
-    
+
     $("#modalpersonaje").modal("show");
 }
 
@@ -54,14 +58,14 @@ async function getAllCharacters() {
     return { results: allCharacters };
 }
 
-$(document).on("click", "#show", async function() {
+$(document).on("click", "#show", async function () {
     const data = await getAllCharacters();
     fillTable(data);
 });
 
-$(document).on('click', '.btnMoreDetails', function() {
+$(document).on('click', '.btnMoreDetails', function () {
     const id = $(this).data('id');
-    
+
     fetch(`https://rickandmortyapi.com/api/character/${id}`)
         .then(response => response.json())
         .then(character => showCharacterDetails(character))
