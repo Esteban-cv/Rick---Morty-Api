@@ -5,11 +5,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Rick and Morty's API</title>
+
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"   />
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="../js/jquery.min.js"></script>
 </head>
 
 <body class="bg-light">
@@ -40,14 +45,14 @@
                 <div id="userList">
                     <div class="card shadow-sm border-0">
                         <div
-                            class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                            class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                             <h5 class="card-title mb-0">
                                 <i class="fas fa-users me-2"></i>Listado de Personajes
                             </h5>
                         </div>
                         <div class="card-body p-0">
                             <div class="table-responsive">
-                                <table id="tableCharacters" class="table table-striped table-hover mb-0">
+                                <table id="tablapersonajes" class="table table-striped table-hover mb-0">
                                     <thead class="table-dark">
                                         <tr>
                                             <th scope="col" class="text-center">
@@ -62,13 +67,17 @@
                                             <th scope="col">
                                                 <i class="fas fa-heart me-1"></i>ESTADO
                                             </th>
+                                            <th scope="col">
+                                                <i class="fas fa-tools me-1"></i>ACCIONES
+                                            </th>
                                         </tr>
                                     </thead>
-                                    <tbody id="usersTable">
+                                    <tbody id="charactersTable">
                                         <tr class="text-muted fst-italic">
-                                            <td colspan="4" class="text-center py-4">
+                                            <td colspan="5" class="text-center py-4">
                                                 <i class="fas fa-info-circle me-2"></i>
-                                                No hay personajes cargados. Haz clic en "Listar personajes" para ver los personajes.
+                                                No hay personajes cargados. Haz clic en "Listar personajes" para ver los
+                                                personajes.
                                             </td>
                                         </tr>
                                     </tbody>
@@ -82,72 +91,62 @@
     </div>
 
     <!-- Modal Editar -->
-    <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="modalpersonaje" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content border-0 shadow">
                 <div class="modal-header bg-primary text-white">
                     <h5 class="modal-title">
-                        <i class="fas fa-edit me-2"></i>Editar Usuario
+                        <i class="fas fa-edit me-2"></i>Caracteristicas
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-4">
-                    <input type="hidden" id="editId">
                     <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-semibold">
-                                <i class="fas fa-id-card me-1 text-primary"></i>Documento
-                            </label>
-                            <input type="text" id="editDocument" class="form-control form-control-lg">
+                        <div class="col-md-4 text-center mb-3">
+                            <img id="characterImage" src="" alt="Character Image" class="img-fluid rounded-circle mb-3"
+                                style="max-width: 200px;">
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-semibold">
-                                <i class="fas fa-user me-1 text-primary"></i>Nombre
-                            </label>
-                            <input type="text" id="editName" class="form-control form-control-lg">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label fw-semibold">
-                                <i class="fas fa-birthday-cake me-1 text-primary"></i>Edad
-                            </label>
-                            <input type="number" id="editAge" class="form-control form-control-lg">
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label fw-semibold">
-                                <i class="fas fa-phone me-1 text-primary"></i>Teléfono
-                            </label>
-                            <input type="tel" id="editPhone" class="form-control form-control-lg">
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label fw-semibold">
-                                <i class="fas fa-map-marker-alt me-1 text-primary"></i>Dirección
-                            </label>
-                            <input type="text" id="editAddress" class="form-control form-control-lg">
+                        <div class="col-md-8">
+                            <h3 id="characterName" class="mb-3"></h3>
+                            <div class="character-info">
+                                <p><i class="fas fa-dna me-2 text-primary"></i><strong>Especie:</strong> <span
+                                        id="characterSpecies"></span></p>
+                                <p><i class="fas fa-heart me-2 text-primary"></i><strong>Estado:</strong> <span
+                                        id="characterStatus"></span></p>
+                                <p><i class="fas fa-venus-mars me-2 text-primary"></i><strong>Género:</strong> <span
+                                        id="characterGender"></span></p>
+                                <p><i class="fas fa-globe me-2 text-primary"></i><strong>Origen:</strong> <span
+                                        id="characterOrigin"></span></p>
+                                <p><i class="fas fa-map-marker-alt me-2 text-primary"></i><strong>Ubicación:</strong>
+                                    <span id="characterLocation"></span>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer border-0 bg-light">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <i class="fas fa-times me-2"></i>Cancelar
-                    </button>
-                    <button type="button" id="btnUpdate" class="btn btn-primary btn-lg px-4">
-                        <i class="fas fa-save me-2"></i>Guardar Cambios
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>Cerrar
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <!-- jQuery (cargar primero que DataTables) -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
+    <!-- Bootstrap Bundle JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
-    <script src="../js/user.js"></script>
+
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <!-- Tu script -->
+    <script src="../js/main.js"></script>
 
 </body>
 
